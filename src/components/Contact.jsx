@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { WA_LINK } from "../lib/constants";
-import { Phone, MapPin, Clock, MessageCircle, Send } from "lucide-react";
-import mapa from "../assets/mapa.webp";
+import { MapPin, Clock, MessageCircle } from "lucide-react";
+import mapa from "/mapa.webp";
 
 const container = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
 const item = {

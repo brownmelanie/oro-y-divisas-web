@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 import { useFxRates } from "../lib/useFxRates";
 
-import oro from "../assets/oro.webp";
-import plata from "../assets/plata.webp";
-import relojes from "../assets/relojes.webp";
+import oro from "/oro.webp";
+import plata from "/plata.webp";
+import relojes from "/relojes.webp";
 import { WA_LINK } from "../lib/constants";
 
 const container = {

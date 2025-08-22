@@ -12,12 +12,11 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import joyas from "../assets/joyas.webp";
-import oro from "../assets/plata.webp";
-import reloj from "../assets/relojes.webp";
-import dolar from "../assets/dolar.webp";
+import joyas from "/joyas.webp";
+import oro from "/plata.webp";
+import reloj from "/relojes.webp";
+import dolar from "/dolar.webp";
 
-// Extras (podés reemplazarlos por assets locales si querés)
 const slides = [
   { src: joyas, alt: "Joyas" },
   { src: oro, alt: "Lingotes" },

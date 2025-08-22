@@ -1,4 +1,4 @@
-import dev from "../assets/developer.svg"
+import dev from "/developer.svg"
 
 export default function Footer() {
   const year = new Date().getFullYear();

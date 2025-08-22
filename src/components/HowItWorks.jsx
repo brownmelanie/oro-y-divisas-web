@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PhoneCall, Scale, BadgeCheck, Banknote } from "lucide-react";
 import { WA_LINK } from "../lib/constants";
-import joyas from "../assets/joyas2.webp";
+import joyas from "/joyas2.webp";
 
 const container = {
   hidden: {},

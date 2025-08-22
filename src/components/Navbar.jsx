@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { WA_LINK } from "../lib/constants";
-import { Menu, X } from "lucide-react"
-import logo from "../assets/icon-navbar.png";
+import { Menu, X } from "lucide-react";
+import logo from "/icon-navbar.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -85,11 +85,21 @@ export default function Navbar() {
         </a>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <a href="#servicios" className={linkClass}>Servicios</a>
-          <a href="#tasacion" className={linkClass}>Tasación</a>
-          <a href="#divisas" className={linkClass}>Divisas</a>
-          <a href="#preguntas" className={linkClass}>Preguntas</a>
-          <a href="#contacto" className={linkClass}>Contacto</a>
+          <a href="#servicios" className={linkClass}>
+            Servicios
+          </a>
+          <a href="#tasacion" className={linkClass}>
+            Tasación
+          </a>
+          <a href="#divisas" className={linkClass}>
+            Divisas
+          </a>
+          <a href="#preguntas" className={linkClass}>
+            Preguntas
+          </a>
+          <a href="#contacto" className={linkClass}>
+            Contacto
+          </a>
           <a
             href={WA_LINK}
             target="_blank"
@@ -105,10 +115,14 @@ export default function Navbar() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="md:hidden inline-flex items-center justify-center w-10 h-10
-                     transition-transform active:scale-95"
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          className="md:hidden inline-flex items-center justify-center w-10 h-10hover:bg-white/5 transition active:scale-95"
         >
-          ☰
+          {open ? (
+            <X className="w-5 h-5 text-white" aria-hidden="true" />
+          ) : (
+            <Menu className="w-5 h-5 text-white" aria-hidden="true" />
+          )}
         </button>
       </div>
 
@@ -134,11 +148,21 @@ export default function Navbar() {
               transition={{ duration: 0.28, ease: "easeOut" }}
             >
               <div className="px-10 pt-8 pb-6 flex flex-col gap-3 text-sm">
-                <a href="#servicios" className={linkClass} onClick={closeMenu}>Servicios</a>
-                <a href="#tasacion" className={linkClass} onClick={closeMenu}>Tasación</a>
-                <a href="#divisas" className={linkClass} onClick={closeMenu}>Divisas</a>
-                <a href="#preguntas" className={linkClass} onClick={closeMenu}>Preguntas</a>
-                <a href="#contacto" className={linkClass} onClick={closeMenu}>Contacto</a>
+                <a href="#servicios" className={linkClass} onClick={closeMenu}>
+                  Servicios
+                </a>
+                <a href="#tasacion" className={linkClass} onClick={closeMenu}>
+                  Tasación
+                </a>
+                <a href="#divisas" className={linkClass} onClick={closeMenu}>
+                  Divisas
+                </a>
+                <a href="#preguntas" className={linkClass} onClick={closeMenu}>
+                  Preguntas
+                </a>
+                <a href="#contacto" className={linkClass} onClick={closeMenu}>
+                  Contacto
+                </a>
                 <a
                   href={WA_LINK}
                   target="_blank"

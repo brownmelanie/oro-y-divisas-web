@@ -9,7 +9,7 @@ import Trust from './components/Trust'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import FloatingWA from './components/FloatingWA'
+import FloatingActions from './components/FloatingActions'
 
 function App() {
 
@@ -25,7 +25,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
-      <FloatingWA />
+      <FloatingActions />
     </>
   )
 }

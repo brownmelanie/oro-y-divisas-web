@@ -1,53 +1,101 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es-AR" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/FAVICON.svg" />
-    <link href="/src/style.css" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Compramos Oro, Plata, Relojes | Cambio de Divisas</title>
-    <meta
-      name="description"
-      content="Compramos ORO 24K, 18K, 14K, 9K, plata y relojes de alta gama. Cambio de divisas: dólares, euros, reales y libras. Pago en el acto y tasación gratuita."
-    />
-    <meta name="theme-color" content="#111827" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+    <title>Oro & Divisas | Compramos oro, plata, brillantería y relojes | Cambio de divisas en Escobar</title>
+    <meta name="description" content="Tasación gratuita y pago en el acto. Compramos oro 24/18/14/9K, plata, brillantería y relojes de alta gama. Cambio de divisas (USD, EUR, BRL, GBP) en Escobar, Buenos Aires." />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Canonical (usa env si está disponible) -->
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+
+    <!-- Hreflang -->
+    <link rel="alternate" href="%VITE_SITE_URL%/" hreflang="es-AR" />
+    <link rel="alternate" href="%VITE_SITE_URL%/" hreflang="es" />
+    <link rel="alternate" href="%VITE_SITE_URL%/" hreflang="x-default" />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Oro & Divisas" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content="Compramos oro, plata, brillantería y relojes | Cambio de divisas" />
+    <meta property="og:description" content="Tasación gratuita y pago en el acto. Oro, plata, brillantería y relojes. Cambio de USD, EUR, BRL, GBP." />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="/og.jpg" />
+    <meta property="og:image:alt" content="Oro y divisas en Escobar" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Compramos oro, plata, brillantería y relojes | Cambio de divisas" />
+    <meta name="twitter:description" content="Tasación gratuita y pago en el acto en Escobar, Buenos Aires." />
+    <meta name="twitter:image" content="/og.jpg" />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Preload de la imagen principal del hero -->
+    <link rel="preload" as="image" href="/hero@2x.webp" imagesrcset="/hero.webp 1x, /hero@2x.webp 2x" />
+
+    <!-- (Opcional) hoja de estilos si la usás -->
+    <link href="/src/style.css" rel="stylesheet" />
+
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <meta
-      property="og:title"
-      content="Compramos Oro, Plata, Relojes | Cambio de Divisas"
-    />
-    <meta
-      property="og:description"
-      content="Tasación gratuita y pago en el acto. Oro 24-18-14-9k, plata, relojes de alta gama y cambio de divisas."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.jpg" />
+    <!-- NOINDEX automático en deploys de preview de Vercel -->
+    <script>
+      (function () {
+        // Toma el host "oficial" desde el link canonical
+        var canonical = document.querySelector('link[rel="canonical"]')?.href || "%VITE_SITE_URL%/";
+        try {
+          var canonicalHost = new URL(canonical).hostname;
+          var isPreview = location.hostname.endsWith(".vercel.app") && location.hostname !== canonicalHost;
+          if (isPreview) {
+            var m = document.querySelector('meta[name="robots"]');
+            if (m) m.setAttribute("content", "noindex,nofollow");
+            else {
+              m = document.createElement("meta");
+              m.name = "robots";
+              m.content = "noindex,nofollow";
+              document.head.appendChild(m);
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
 
+    <!-- JSON-LD LocalBusiness -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "JewelryStore",
-        "name": "Oro&Divisas",
-        "image": "/og-image.jpg",
-        "description": "Compra de oro 24-18-14-9K, plata, relojes de alta gama y cambio de divisas.",
+        "@type": "LocalBusiness",
+        "name": "Oro & Divisas",
+        "url": "%VITE_SITE_URL%/",
+        "image": "%VITE_SITE_URL%/og.jpg",
+        "telephone": "%VITE_PHONE%",
+        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Calle Falsa 123",
-          "addressLocality": "Buenos Aires",
-          "addressRegion": "BA",
+          "streetAddress": "Rivadavia 480 Local 44",
+          "addressLocality": "Escobar",
+          "addressRegion": "Buenos Aires",
           "addressCountry": "AR"
         },
-        "telephone": "+54 9 11 0000-0000",
-        "url": "https://tusitio.com",
+        "openingHoursSpecification": [
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "17:30" },
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "15:00" }
+        ],
         "currenciesAccepted": "ARS, USD, EUR, BRL, GBP",
-        "paymentAccepted": "Cash, BankTransfer"
+        "paymentAccepted": "Cash, WireTransfer",
+        "areaServed": "Buenos Aires",
+        "additionalType": ["https://schema.org/JewelryStore","https://schema.org/CurrencyExchange"]
       }
     </script>
   </head>

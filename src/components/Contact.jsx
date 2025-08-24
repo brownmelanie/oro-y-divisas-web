@@ -5,10 +5,7 @@ import { MapPin, Clock, MessageCircle } from "lucide-react";
 import mapa from "/mapa.webp";
 
 const container = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const item = { hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } };
 
 function Frame({ children }) {
   return (
@@ -33,6 +30,7 @@ function waUrlWithText(text) {
 export default function Contact() {
   const [name, setName] = useState("");
   const [phoneI, setPhoneI] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [service, setService] = useState("Vender oro");
   const [msg, setMsg] = useState("");
 
@@ -41,8 +39,25 @@ export default function Contact() {
     return `tel:${raw.startsWith("+") ? raw : `+${raw}`}`;
   }, []);
 
+  const handlePhoneChange = (e) => {
+    let v = e.target.value.replace(/[^\d+]/g, "");
+    v = v.startsWith("+") ? "+" + v.slice(1).replace(/\+/g, "") : v.replace(/\+/g, "");
+    const digits = v.replace(/\D/g, "").slice(0, 15);
+    v = (v.startsWith("+") ? "+" : "") + digits;
+    setPhoneI(v);
+    if (v && !/^\+?\d{7,15}$/.test(v)) setPhoneError("Ingresá 7 a 15 dígitos (opcional + al inicio).");
+    else setPhoneError("");
+  };
+
+  const validatePhone = () => /^\+?\d{7,15}$/.test(phoneI);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    if (!validatePhone()) {
+      setPhoneError("Número inválido. Usá 7 a 15 dígitos (opcional + al inicio).");
+      document.getElementById("phone")?.focus();
+      return;
+    }
     const text = `Hola! Soy ${name}. Quiero coordinar: ${service}.
 Mi teléfono: ${phoneI}.
 ${msg ? `Mensaje: ${msg}` : ""}`;
@@ -51,7 +66,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
 
   return (
     <section id="contacto" className="relative px-8 pt-28 pb-20 lg:pt-36 lg:pb-28 border-t border-white/10">
-      {/* glow dorado de fondo */}
+      {/* glow dorado */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[92%] h-48 blur-3xl opacity-15 rounded-full"
@@ -61,7 +76,6 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
       />
 
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-start">
-        {/* Columna izquierda: formulario */}
         <motion.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
           <motion.h2 variants={item} className="text-3xl font-bold">
             Contacto
@@ -73,11 +87,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
             />
           </motion.h2>
 
-          <motion.form
-            variants={item}
-            onSubmit={onSubmit}
-            className="mt-6"
-          >
+          <motion.form variants={item} onSubmit={onSubmit} className="mt-6">
             <Frame>
               <div className="p-5 grid grid-cols-1 gap-4">
                 <div>
@@ -90,6 +100,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
                     onChange={(e) => setName(e.target.value)}
                     className="mt-1 w-full rounded-lg bg-neutral-900/50 border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-200/40 transition"
                     placeholder="Tu nombre"
+                    autoComplete="name"
                   />
                 </div>
 
@@ -99,13 +110,26 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
                     <input
                       id="phone"
                       type="tel"
+                      inputMode="numeric"
+                      autoComplete="tel"
+                      pattern="^\+?\d{7,15}$"
+                      title="Usá 7 a 15 dígitos. Podés comenzar con +"
+                      maxLength={16}
                       required
                       value={phoneI}
-                      onChange={(e) => setPhoneI(e.target.value)}
-                      className="mt-1 w-full rounded-lg bg-neutral-900/50 border border-white/10 px-3 py-2 outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-200/40 transition"
-                      placeholder="Ej. +54 9 11..."
+                      onChange={handlePhoneChange}
+                      onBlur={() => setPhoneError(validatePhone() || !phoneI ? "" : "Número inválido.")}
+                      aria-invalid={!!phoneError}
+                      aria-describedby="phone-help"
+                      className={`mt-1 w-full rounded-lg bg-neutral-900/50 border px-3 py-2 outline-none transition
+                        ${phoneError ? "border-red-400 focus:ring-red-400/40 focus:border-red-300" : "border-white/10 focus:ring-amber-300/40 focus:border-amber-200/40"}`}
+                      placeholder="Ej. +54911XXXXXXX"
                     />
+                    <p id="phone-help" className={`mt-1 text-xs ${phoneError ? "text-red-400" : "text-neutral-500"}`}>
+                      {phoneError || "Solo números."}
+                    </p>
                   </div>
+
                   <div>
                     <label htmlFor="service" className="text-sm text-neutral-300">Servicio</label>
                     <select
@@ -138,9 +162,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
                   <motion.button
                     type="submit"
                     className="relative inline-flex items-center gap-2 px-6 py-3 rounded-xl gold-gradient text-neutral-900 font-semibold shadow ring-2 ring-amber-300/30 overflow-hidden"
-                    whileHover={{
-                      scale: 1.03,
-                    }}
+                    whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: "spring", stiffness: 240, damping: 15 }}
                     aria-label="Enviar por WhatsApp"
@@ -152,11 +174,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
                     <motion.span
                       aria-hidden
                       className="pointer-events-none absolute inset-0 z-10"
-                      style={{
-                        background:
-                          "linear-gradient(120deg, transparent 0%, rgba(255,255,255,.50) 35%, transparent 70%)",
-                        mixBlendMode: "soft-light",
-                      }}
+                      style={{ background: "linear-gradient(120deg, transparent 0%, rgba(255,255,255,.50) 35%, transparent 70%)", mixBlendMode: "soft-light" }}
                       animate={{ x: ["-120%", "120%"] }}
                       transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                     />
@@ -164,13 +182,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
                       aria-hidden
                       className="pointer-events-none absolute -inset-3 rounded-[16px] z-0"
                       style={{ boxShadow: "0 0 0 0 rgba(227,173,42,.30)" }}
-                      animate={{
-                        boxShadow: [
-                          "0 0 0 0 rgba(227,173,42,.30)",
-                          "0 0 50px 18px rgba(227,173,42,.50)",
-                          "0 0 0 0 rgba(227,173,42,.30)",
-                        ],
-                      }}
+                      animate={{ boxShadow: ["0 0 0 0 rgba(227,173,42,.30)", "0 0 50px 18px rgba(227,173,42,.50)", "0 0 0 0 rgba(227,173,42,.30)"] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
                   </motion.button>
@@ -180,7 +192,7 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
           </motion.form>
         </motion.div>
 
-        {/* Columna derecha: imagen + data */}
+        {/* Columna derecha */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -189,34 +201,20 @@ ${msg ? `Mensaje: ${msg}` : ""}`;
           className="relative"
         >
           <Frame>
-            <motion.div
-              className="aspect-[4/3] w-full overflow-hidden"
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <img
-                src={mapa}
-                alt="Ubicación / Atención"
-                className="w-full h-full object-cover"
-              />
+            <motion.div className="aspect-[4/3] w-full overflow-hidden" animate={{ y: [0, -6, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}>
+              <img src={mapa} alt="Ubicación / Atención" className="w-full h-full object-cover" />
             </motion.div>
           </Frame>
 
-          {/* Overlay informativo */}
-          <motion.div
-            className="absolute -bottom-6 -right-4 bg-neutral-900/85 border border-white/10 rounded-xl p-4 shadow-xl backdrop-blur"
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          >
+          <motion.div className="absolute -bottom-6 -right-4 bg-neutral-900/85 border border-white/10 rounded-xl p-4 shadow-xl backdrop-blur"
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}>
             <div className="flex items-center gap-2 text-sm">
               <MapPin className="w-4 h-4 text-amber-300" />
-              <p><strong>Dirección:</strong> Calle 123, Buenos Aires</p>
+              <p><strong>Dirección:</strong> Rivadavia 480 Local 44, Escobar</p>
             </div>
             <div className="flex items-center gap-2 text-sm mt-2">
               <Clock className="w-4 h-4 text-amber-300" />
-              <p><strong>Horario:</strong> Lun a Vie 10–18 hs • Sáb 10–14 hs</p>
+              <p><strong>Horario:</strong> Lun a Vie 09–17:30 hs • Sáb 10–15 hs</p>
             </div>
           </motion.div>
         </motion.div>

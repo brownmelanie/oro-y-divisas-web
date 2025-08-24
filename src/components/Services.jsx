@@ -5,12 +5,14 @@ import {
   Watch,
   BadgeDollarSign,
   ArrowRight,
+  Gem,
 } from "lucide-react";
 import { useFxRates } from "../lib/useFxRates";
 
 import oro from "/oro.webp";
 import plata from "/plata.webp";
 import relojes from "/relojes.webp";
+import brillanteria from "/brillanteria.webp";
 import { WA_LINK } from "../lib/constants";
 
 const container = {
@@ -33,7 +35,6 @@ function waUrlFor(title) {
   return `${WA_LINK}${sep}text=${encodeURIComponent(text)}`;
 }
 
-// Borde degradado dorado animado
 function FancyWrap({ children }) {
   return (
     <motion.div
@@ -71,8 +72,7 @@ function Card({ title, badge, desc, img, icon: Icon }) {
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
     >
       <FancyWrap>
-        {/* min-h para que TODAS las imágenes empiecen a la misma altura */}
-        <div className="p-5 h-full flex flex-col min-h-[340px]">
+        <div className="p-5 h-full flex flex-col min-h-[346px]">
           <div className="space-y-2 min-h-[120px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -88,11 +88,7 @@ function Card({ title, badge, desc, img, icon: Icon }) {
                 <h3 className="font-semibold">{title}</h3>
               </div>
               {badge && (
-                <span
-                  className="text-[11px] leading-none px-3 py-1 rounded-full
-                 bg-amber-300/10 text-amber-200 border border-amber-200/30
-                 font-mono tabular-nums whitespace-nowrap"
-                >
+                <span className="text-[11px] leading-none px-3 py-1 rounded-full bg-amber-300/10 text-amber-200 border border-amber-200/30 font-mono tabular-nums whitespace-nowrap">
                   {badge}
                 </span>
               )}
@@ -102,7 +98,6 @@ function Card({ title, badge, desc, img, icon: Icon }) {
 
           {img && (
             <div className="mt-4 h-32 rounded-xl overflow-hidden border border-white/10 relative">
-              {/* máscara radial para foco */}
               <motion.div
                 className="absolute inset-0"
                 initial={{
@@ -125,7 +120,6 @@ function Card({ title, badge, desc, img, icon: Icon }) {
             </div>
           )}
 
-          {/* Empuja el link al fondo para igualar alturas */}
           <div className="mt-auto" />
           <motion.a
             href={waUrlFor(title)}
@@ -144,13 +138,12 @@ function Card({ title, badge, desc, img, icon: Icon }) {
 }
 
 export default function Services() {
-  const { loading, toARS, updated, error, source } = useFxRates();
+  const { loading, toARS, updated, error } = useFxRates();
   const nfARS = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
     maximumFractionDigits: 2,
   });
-  const CODES = ["USD", "EUR", "BRL", "GBP"];
 
   return (
     <section
@@ -182,33 +175,10 @@ export default function Services() {
               />
             </h2>
             <p className="mt-2 text-neutral-300">
-              Compramos oro, plata y relojes. Cambio de divisas con cotización
-              actualizada.
+              Compramos oro, plata, <strong>brillantería</strong> y relojes.
+              Cambio de divisas con cotización actualizada.
             </p>
           </div>
-
-          <motion.a
-            href="#contacto"
-            className="hidden md:inline-flex px-4 py-2 rounded-lg border border-white/15 relative overflow-hidden"
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="relative z-10">Contactar</span>
-            <motion.span
-              aria-hidden
-              className="absolute inset-0 opacity-30"
-              style={{
-                background:
-                  "linear-gradient(90deg, rgba(239,195,82,.35), rgba(255,255,255,0), rgba(231,173,42,.35))",
-              }}
-              animate={{ x: ["-100%", "100%"] }}
-              transition={{
-                duration: 2.2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          </motion.a>
         </div>
 
         {/* Grid de tarjetas */}
@@ -217,7 +187,7 @@ export default function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch"
+          className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5 items-stretch"
         >
           <Card
             title="Compra de ORO"
@@ -235,13 +205,20 @@ export default function Services() {
           />
 
           <Card
+            title="Compra de BRILLANTERÍA"
+            desc="Solitarios, alianzas, aros y colgantes con diamantes. Tasación por quilataje, color y pureza."
+            img={brillanteria}
+            icon={Gem}
+          />
+
+          <Card
             title="Relojes de alta gama"
             desc="Rolex, Omega, Tag Heuer, Cartier y más. Con o sin papeles."
             img={relojes}
             icon={Watch}
           />
 
-          {/* DIVISAS con datos reales */}
+          {/* DIVISAS */}
           <motion.article
             id="divisas"
             variants={item}
@@ -250,7 +227,7 @@ export default function Services() {
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
             <FancyWrap>
-              <div className="p-5 h-full flex flex-col min-h-[340px]">
+              <div className="p-5 h-full flex flex-col min-h-[345px]">
                 <div className="space-y-2 min-h-[120px]">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10">
@@ -264,14 +241,16 @@ export default function Services() {
                   </p>
                 </div>
 
-                <div className="mb-4 grid grid-cols-4 gap-2 text-center text-xs">
+                <div className="mb-4 grid grid-cols-4 gap-2">
                   {["USD", "EUR", "BRL", "GBP"].map((code, idx) => {
                     const val = toARS ? toARS[code] : null;
                     const show = val && isFinite(val) ? nfARS.format(val) : "—";
                     return (
                       <motion.div
                         key={code}
-                        className="relative rounded-lg border border-amber-200/20 py-3 px-3 bg-amber-100/[0.03] overflow-hidden"
+                        className="relative rounded-lg border border-amber-200/20 bg-amber-100/[0.03]
+                   overflow-hidden min-h-[60px] px-2
+                   flex flex-col items-center justify-center"
                         animate={{ y: [0, -2, 0] }}
                         transition={{
                           duration: 3 + idx * 0.2,
@@ -279,7 +258,6 @@ export default function Services() {
                           ease: "easeInOut",
                         }}
                       >
-                        {/* shimmer mientras carga */}
                         {loading && (
                           <motion.span
                             aria-hidden
@@ -297,8 +275,12 @@ export default function Services() {
                             }}
                           />
                         )}
-                        <p className="text-amber-200 font-medium">{code}</p>
-                        <p className="font-semibold text-white">{show}</p>
+                        <p className="text-[11px] text-amber-200 font-medium leading-none">
+                          {code}
+                        </p>
+                        <p className="mt-0.5 text-sm font-semibold text-white leading-tight tabular-nums whitespace-nowrap">
+                          {show}
+                        </p>
                       </motion.div>
                     );
                   })}
@@ -316,18 +298,10 @@ export default function Services() {
                 </motion.a>
 
                 <div className="mt-auto" />
-
                 <p className="mt-3 text-[11px] text-neutral-400">
                   {error ? (
                     <>
                       No se pudo actualizar la cotización.
-                      <br />
-                      Valores aproximados de referencia. Confirmá la cotización
-                      final por WhatsApp.
-                    </>
-                  ) : updated ? (
-                    <>
-                      Actualizado: {String(updated)}
                       <br />
                       Valores aproximados de referencia. Confirmá la cotización
                       final por WhatsApp.

@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HelpCircle, ChevronDown } from "lucide-react";
 import { WA_LINK } from "../lib/constants";
 
-const container = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12 } },
+};
 const item = {
   hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
@@ -60,9 +63,7 @@ function FAQItem({ q, a }) {
                 transition={{ duration: 0.35, ease: "easeOut" }}
                 className="overflow-hidden"
               >
-                <div className="pt-3 text-sm text-neutral-300">
-                  {a}
-                </div>
+                <div className="pt-3 text-sm text-neutral-300">{a}</div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -92,13 +93,33 @@ export default function FAQ() {
     },
   ];
 
+const faqJsonLd = useMemo(
+  () =>
+    JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    }),
+  [faqs]
+);
+
   return (
-    <section id="preguntas" className="relative px-8 pt-28 pb-20 lg:pt-36 lg:pb-28 border-t border-white/10">
+    <section
+      id="preguntas"
+      className="relative px-8 pt-28 pb-20 lg:pt-36 lg:pb-28 border-t border-white/10"
+    >
       {/* glow dorado de sección */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-[90%] h-44 blur-3xl opacity-15 rounded-full"
-        style={{ background: "radial-gradient(60% 100% at 50% 50%, rgba(239,195,82,.35), rgba(0,0,0,0))" }}
+        style={{
+          background:
+            "radial-gradient(60% 100% at 50% 50%, rgba(239,195,82,.35), rgba(0,0,0,0))",
+        }}
         animate={{ scale: [1, 1.02, 1], opacity: [0.12, 0.2, 0.12] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -141,7 +162,9 @@ export default function FAQ() {
           className="mt-8 flex justify-center"
         >
           <motion.a
-            href={`${WA_LINK}${WA_LINK.includes("?") ? "&" : "?"}text=${encodeURIComponent(
+            href={`${WA_LINK}${
+              WA_LINK.includes("?") ? "&" : "?"
+            }text=${encodeURIComponent(
               "Hola! Tengo una consulta sobre sus servicios."
             )}`}
             target="_blank"
@@ -151,20 +174,32 @@ export default function FAQ() {
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 240, damping: 15 }}
           >
-            <span className="relative z-20">¿No encontraste tu respuesta? Escribinos</span>
+            <span className="relative z-20">
+              ¿No encontraste tu respuesta? Escribinos
+            </span>
             <motion.span
               aria-hidden
               className="pointer-events-none absolute inset-0 z-10"
               style={{
-                background: "linear-gradient(120deg, transparent 0%, rgba(255,255,255,.50) 35%, transparent 70%)",
+                background:
+                  "linear-gradient(120deg, transparent 0%, rgba(255,255,255,.50) 35%, transparent 70%)",
                 mixBlendMode: "soft-light",
               }}
               animate={{ x: ["-120%", "120%"] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 1.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
           </motion.a>
         </motion.div>
       </div>
+      <script
+        id="faq-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: faqJsonLd }}
+      />
     </section>
   );
 }
